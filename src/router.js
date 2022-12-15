@@ -7,12 +7,17 @@ import {
 const routes = [
     {
         path: '/',
-        name: 'Login',
+        name: 'welcome',
+        component: () => import('@/components/WelcomePage.vue'),
+    },
+    {
+        path: '/login',
+        name: 'login',
         component: () => import('@/components/LoginPage.vue'),
     },
     {
         path: '/register',
-        name: 'Register',
+        name: 'register',
         component: () => import('@/components/RegisterPage.vue'),
     },
     {
@@ -57,7 +62,34 @@ const routes = [
                 component: () => import("@/views/User/Ulasan/editPage.vue"),
             },
         ],
-    }, 
+    },
+    {
+        path: '/admin',
+        name: 'beranda',
+        component: () => import('@/components/AdminDashboard.vue'),
+        children: [            
+            {
+                path: "/produk",
+                name: "produk.index",
+                component: () => import("@/views/User/Produk/indexPage.vue"),
+            },
+            {
+                path: "/produk/create",
+                name: "produk.create",
+                component: () => import("@/views/User/Produk/createPage.vue"),
+            },
+            {
+                path: "/produk/edit",
+                name: "produk.edit",
+                component: () => import("@/views/User/Produk/editPage.vue"),
+            },
+            {
+                  path: "/ulasan",
+                  name: "ulasan.index",
+                  component: () => import("@/views/User/Ulasan/indexPage.vue"),
+            },
+        ],
+    },
 ]
 //create router
 const router = createRouter({
