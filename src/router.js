@@ -27,39 +27,49 @@ const routes = [
         children: [
             {
                 path: "/produk",
-                name: "produk.index",
+                name: "user.produk.index",
                 component: () =>
                     import('@/views/User/Produk/indexPage.vue'),
             },
             {
                 path: "/transaksi",
-                name: "transaksi.index",
+                name: "user.transaksi.index",
                 component: () => import("@/views/User/Transaksi/indexPage.vue"),
             },
             {
                 path: "/transaksi/create",
-                name: "transaksi.create",
+                name: "user.transaksi.create",
                 component: () => import("@/views/User/Transaksi/createPage.vue"),
             },
             {
                 path: "/transaksi/edit",
-                name: "transaksi.edit",
+                name: "user.transaksi.edit",
                 component: () => import("@/views/User/Transaksi/editPage.vue"),
             },
             {
                   path: "/ulasan",
-                  name: "ulasan.index",
+                  name: "user.ulasan.index",
                   component: () => import("@/views/User/Ulasan/indexPage.vue"),
             },
             {
                 path: "/ulasan/create",
-                name: "ulasan.create",
+                name: "user.ulasan.create",
                 component: () => import("@/views/User/Ulasan/createPage.vue"),
             },
             {
                 path: "/ulasan/edit",
-                name: "ulasan.edit",
+                name: "user.ulasan.edit",
                 component: () => import("@/views/User/Ulasan/editPage.vue"),
+            },
+            {
+                path: "/profile",
+                name: "user.profile.view",
+                component: () => import("@/views/User/Profile/profilePage.vue"),
+            },
+            {
+                path: "/profile/edit",
+                name: "user.profile.edit",
+                component: () => import("@/views/User/Profile/editPage.vue"),
             },
         ],
     },
@@ -70,24 +80,29 @@ const routes = [
         children: [            
             {
                 path: "/produk",
-                name: "produk.index",
-                component: () => import("@/views/User/Produk/indexPage.vue"),
+                name: "admin.produk.index",
+                component: () => import("@/views/Admin/Produk/indexPage.vue"),
             },
             {
                 path: "/produk/create",
-                name: "produk.create",
-                component: () => import("@/views/User/Produk/createPage.vue"),
+                name: "admin.produk.create",
+                component: () => import("@/views/Admin/Produk/createPage.vue"),
             },
             {
                 path: "/produk/edit",
-                name: "produk.edit",
-                component: () => import("@/views/User/Produk/editPage.vue"),
+                name: "admin.produk.edit",
+                component: () => import("@/views/Admin/Produk/editPage.vue"),
             },
             {
                   path: "/ulasan",
-                  name: "ulasan.index",
-                  component: () => import("@/views/User/Ulasan/indexPage.vue"),
+                  name: "admin.ulasan.index",
+                  component: () => import("@/views/Admin/Ulasan/indexPage.vue"),
             },
+            {
+                path: "/user",
+                name: "admin.user.index",
+                component: () => import("@/views/Admin/User/indexPage.vue"),
+          },
         ],
     },
 ]
