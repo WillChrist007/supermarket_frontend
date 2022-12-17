@@ -24,9 +24,13 @@
                         <li class="nav-item">
                             <router-link :to="{ name: 'user.profile.view' }" class="nav-link">Profile</router-link>
                         </li>
-                    </ul>
-                    <ul class="pb-4">
-                        <router-link :to="{ name: 'welcome' }" class="nav-link">Log Out</router-link>
+                    </ul>                    
+                </div>
+                <div class="position-bottom pt-3">
+                    <ul>
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'welcome' }" class="nav-link">Log Out</router-link>
+                        </li>                        
                     </ul>
                 </div>
             </nav>

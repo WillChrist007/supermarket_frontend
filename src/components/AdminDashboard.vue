@@ -22,8 +22,12 @@
                             <router-link :to="{ name: 'admin.user.index' }" class="nav-link">User</router-link>
                         </li>
                     </ul>
-                    <ul class="pb-4">
-                        <router-link :to="{ name: 'welcome' }" class="nav-link">Log Out</router-link>
+                </div>
+                <div class="position-bottom pt-3">
+                    <ul>
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'welcome' }" class="nav-link">Log Out</router-link>
+                        </li>                        
                     </ul>
                 </div>
             </nav>
