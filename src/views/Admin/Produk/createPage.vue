@@ -1,147 +1,130 @@
 <template>
-    <v-main class="list">
-        <v-card>
-            <v-list-item>
-                <v-list-item-avatar color="grey"></v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title class="headline">Admin</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-            <v-card-title>
-                <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    label="Search"
-                    outlined
-                    hidden
-                    details
-                    style="margin-top:30px"
-                ></v-text-field>
-                <v-spacer></v-spacer>
-                <v-btn color="success" dark @click="dialog=true">Tambah</v-btn>
-            </v-card-title>
-        </v-card>
-        <v-card>
-            <v-data-table :headers="headers" :items="todos" :search="search">
-                <template v-slot:[`item.actions`]="{ item }">
-                    <v-btn small class="mr-2 blue-grey lighten-3" @click="editItem(item)">edit</v-btn>
-                    <v-btn small class="mr-2 blue-grey lighten-3" @click="deleteItem(item)">delete</v-btn>
-                </template>
-            </v-data-table>
-        </v-card>
-        <v-dialog v-model="dialog" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline"></span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-text-field
-                            v-model=""
-                            label="Task"
-                            required
-                        ></v-text-field>
-                        <v-select
-                            v-model=""
-                            :items="[``]"
-                            label=""
-                            required
-                        ></v-select>
-
-                        <v-textarea
-                            v-model=""
-                            label=""
-                            required
-                        ></v-textarea>
-                        <v-select
-                            v-model=""
-                            :items="[``, ``]"
-                            label=""
-                            required
-                        ></v-select>
-                    </v-container>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" text @click="cancel"> Cancel</v-btn>
-                    <v-btn color="blue-darken-1" text @click="save"> Save</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-main>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border-0 rounded shadow">
+                    <div class="card-body">
+                        <h4>TAMBAH PRODUK</h4>
+                        <hr />
+                        <form @submit.prevent="store">
+                            <div class="form-group mb-3">
+                                <label class="form-label">Nama Product</label>
+                                <input type="text" class="form-control" v-model="product.nama_barang"
+                                    placeholder="Masukkan nama product" />
+                                <!-- validation -->
+                                <div v-if="validation.nama_barang" class="mt-2 alert alert-danger">
+                                    {{ validation.nama_barang[0] }}
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="content" class="form-label">Jenis Product</label>
+                                <select class="form-control" v-model="product.jenis">
+                                    <option value="" selected hidden disabled>Pilih Jenis Product</option>
+                                    <option value="Makanan">Makanan</option>
+                                    <option value="Minuman">Minuman</option>
+                                    <option value="Kebersihan">Kebersihan</option>
+                                    <option value="Perabot">Perabot</option>
+                                </select>
+                                <!-- validation -->
+                                <div v-if="validation.jenis" class="mt-2 alert alert-danger">
+                                    {{ validation.jenis[0] }}
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="content" class="form-label">Ketersediaan</label>
+                                <select class="form-control" v-model="product.ketersediaan">
+                                    <option value="" selected hidden disabled>Pilih Ketersediaan</option>
+                                    <option value="1">Tersedia</option>
+                                    <option value="0">Kosong</option>
+                                </select>
+                                <!-- validation -->
+                                <div v-if="validation.ketersediaan" class="mt-2 alert alert-danger">
+                                    {{ validation.ketersediaan[0] }}
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="content" class="form-label">Harga Product</label>
+                                <input class="form-control" type="number" v-model="product.harga"
+                                    placeholder="Masukkan Harga Product" />
+                                <!-- validation -->
+                                <div v-if="validation.ketersediaan" class="mt-2 alert alert-danger">
+                                    {{ validation.harga[0] }}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">SIMPAN</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
+
 <script>
-    export default{
-        name: "ListItem",
-        data() {
+    import {
+        reactive,
+        ref
+    } from "vue";
+    import {
+        useRouter
+    } from "vue-router";
+    import axios from "axios";
+    import { useToast } from "vue-toastification";
+    export default {
+        setup() {
+            //state product
+            const product = reactive({
+                nama_barang: "",
+                jenis: "",
+                ketersediaan: "",
+                harga: "",
+            });
+            //state validation
+            const validation = ref([]);
+            //vue router
+            const router = useRouter();
+            //method store
+            function store() {
+                let nama_barang = product.nama_barang;
+                let jenis = product.jenis;
+                let ketersediaan = product.ketersediaan;
+                let harga = product.harga;
+                let toast = useToast();
+
+                const token = localStorage.getItem('token')
+                axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+                axios
+                    .post("http://localhost:8000/api/products", {
+                        nama_barang: nama_barang,
+                        jenis: jenis,
+                        ketersediaan: ketersediaan,
+                        harga: harga,
+                    })
+                    .then(() => {
+                        toast.success("Berhasil Tambah Data !",{
+                            timeout: 2000
+                        })
+                        //redirect ke post index
+                        router.push({
+                            name: "product.index",
+                        });
+                    })
+                    .catch((error) => {
+                        //assign state validation with error
+                        validation.value = error.response.data;
+                    });
+            }
+            //return
             return {
-                search: null,
-                dialog: false,
-                headers: [
-                    {
-                        text: "Task",
-                        align: "start",
-                        sortable: true,
-                        value: "task",
-                    },
-                    { text: "", value: "" },
-                    { text: "", value: "" },
-                    { text: "", value: "" },
-                    { text: "", value: "" },
-                ],
-                todos: [
-                    {
-                        task: "",
-                        priority: "",
-                        note: "",
-                        status: "",
-                    },
-                    {
-                        task: "",
-                        priority: "",
-                        note: "",
-                        status: "",
-                    },
-                    {
-                        task: "",
-                        priority: "",
-                        note: "",
-                        status: "",
-                    },
-                ],
-                formTodo: {
-                    task: null,
-                    priority: null,
-                    note: null,
-                    status: null,
-                },
+                product,
+                validation,
+                router,
+                store,
             };
         },
-        methods: {
-            save () {
-                this..push(this.);
-                this.resetForm();
-                this.dialog = false;
-            },
-            cancel() {
-                this.resetForm();
-                this.dialog = false;
-            },
-            resetForm() {
-                this. = {
-                    task: null,
-                    priority: null,
-                    note: null,
-                    status: null,
-                };
-            },
-        },
     };
+
 </script>
 <style>
-    .text {
-        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-        font-size: 40px;
-        font-style: italic;
-    }
+
 </style>
