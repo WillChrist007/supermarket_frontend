@@ -73,3 +73,5 @@ export default {
     }
 }
 </script>
+
+<!-- Profile view -->
