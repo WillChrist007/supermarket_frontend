@@ -9,7 +9,7 @@
                         <form @submit.prevent="store">
                             <div class="form-group mb-3">
                                 <label class="form-label">Ulasan Anda</label>
-                                <b-form-textarea size="lg" type="text" class="form-control" v-model="ulasan.isi" placeholder="Masukkan Ulasan anda disini"></b-form-textarea>
+                                <textarea size="lg" type="text" class="form-control" v-model="ulasan.isi" placeholder="Masukkan Ulasan anda disini"></textarea>
                                 <!-- validation -->
                                 <div v-if="validation.isi" class="mt-2 alert alert-danger">
                                     {{
