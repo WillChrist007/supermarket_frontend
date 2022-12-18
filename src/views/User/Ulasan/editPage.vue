@@ -82,4 +82,4 @@ export default {
 
 </style>
 
-<!-- ulasan edit -->
+<!-- ulasan -->
