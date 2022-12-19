@@ -44,7 +44,10 @@ export default {
     setup() {
         let products = ref([])
 
+        const token = localStorage.getItem('token')
         onMounted(() => {
+            axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+
             axios.get('http://localhost:8000/api/product')
             .then(response => {
                 products.value = response.data.data

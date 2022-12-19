@@ -42,7 +42,11 @@ export default {
     setup() {
         let ulasans = ref([])
 
+        const token = localStorage.getItem('token')
+
         onMounted(() => {
+            axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+
             axios.get('http://localhost:8000/api/ulasan')
             .then(response => {
                 ulasans.value = response.data.data
