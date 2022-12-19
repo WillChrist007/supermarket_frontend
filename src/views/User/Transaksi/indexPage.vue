@@ -34,11 +34,13 @@
                                    <td v-if="transaksi.status == 0" class="text-center">
                                        <router-link :to="{ name: 'user.transaksi.edit', params: { id: transaksi.id } }" 
                                        class="btn btn-sm btn-primary mr-1">EDIT</router-link>
+                                        &nbsp;
                                        <button class="btn btn-sm btn-danger ml-1" @click="deleteTransaksi(transaksi.id)">DELETE</button>  
                                    </td>
                                    <td v-else-if="transaksi.status == 1" class="text-center">
                                     <router-link :to="{ name: 'user.transaksi.edit', params: { id: transaksi.id } }" 
                                        class="btn btn-sm btn-primary mr-1 disabled">EDIT</router-link>
+                                        &nbsp;
                                        <button class="btn btn-sm btn-danger ml-1" @click="deleteTransaksi(transaksi.id)" disabled>DELETE</button>  
                                    </td>
                                    <td v-if="transaksi.product.ketersediaan == 0" class="text-center">
@@ -63,60 +65,69 @@
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
 import { useRouter} from 'vue-router'
+import { useToast } from "vue-toastification";
 export default {
    setup() {
 
          //state departemen
-       let transaksis = ref([])
+        let transaksis = ref([])
 
-       const router = useRouter()
-       const token = localStorage.getItem('token')    
-       const id_user = localStorage.getItem('id')
+        const router = useRouter()
+        const token = localStorage.getItem('token')    
+        const id_user = localStorage.getItem('id')
+            
+        let toast = useToast();
 
-       onMounted(() => {
-           axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}  
-           axios.get(`http://localhost:8000/api/transaksiByIdUser/${id_user}`)
-               .then(response => {
-                   transaksis.value = response.data.data
-               }).catch(error => {
-                   console.log(error.response.data)
-           })
-       })
+        onMounted(() => {
+            axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}  
+            axios.get(`http://localhost:8000/api/transaksiByIdUser/${id_user}`)
+                .then(response => {
+                    transaksis.value = response.data.data
+                }).catch(error => {
+                    console.log(error.response.data)
+            })
+        })
 
 
-       function deleteTransaksi(id) {
-           //delete data post by ID
-           axios.delete(`http://localhost:8000/api/transaksi/${id}`).then(() => {          
-               transaksis.value.splice(transaksis.value.indexOf(id), 1);
+        function deleteTransaksi(id) {
+            //delete data post by ID
+            axios.delete(`http://localhost:8000/api/transaksi/${id}`).then(() => {   
+                        toast.error("Berhasil Hapus Data !",{
+                            timeout: 2000
+                        })       
+                transaksis.value.splice(transaksis.value.indexOf(id), 1);
 
-               router.push({
-                   name: 'user.transaksi.index'
-               })
+                router.push({
+                    name: 'user.transaksi.index'
+                })
+                }).catch(error => {
+                    console.log(error.response.data)
+                }) 
+            }
+
+        function bayarTransaksi(id) {
+            //delete data post by ID
+            axios.put(`http://localhost:8000/api/transaksiConfirm/${id}`, {
+                    status: 1
+            }).then(() => {
+                        toast.success("Berhasil Melakukan Transaksi !",{
+                            timeout: 2000
+                        })
+            //redirect ke post index
+                router.push({
+                    name: 'user.transaksi.index'
+                })
             }).catch(error => {
+                //assign state validation with error 
                 console.log(error.response.data)
-            }) 
-           }
+            })
+        }
 
-       function bayarTransaksi(id) {
-           //delete data post by ID
-           axios.put(`http://localhost:8000/api/transaksiConfirm/${id}`, {
-                status: 1
-           }).then(() => {
-           //redirect ke post index
-               router.push({
-                   name: 'user.transaksi.index'
-               })
-           }).catch(error => {
-               //assign state validation with error 
-               console.log(error.response.data)
-           })
-       }
-
-       return {
-           transaksis,
-           deleteTransaksi,
-           bayarTransaksi
-       }
+        return {
+            transaksis,
+            deleteTransaksi,
+            bayarTransaksi
+        }
    }
 }
 </script>

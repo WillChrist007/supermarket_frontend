@@ -79,7 +79,7 @@ const routes = [
         component: () => import('@/components/AdminDashboard.vue'),
         children: [            
             {
-                path: "/produk",
+                path: "/adminproduk",
                 name: "admin.produk.index",
                 component: () => import("@/views/Admin/Produk/indexPage.vue"),
             },
@@ -94,12 +94,12 @@ const routes = [
                 component: () => import("@/views/Admin/Produk/editPage.vue"),
             },
             {
-                  path: "/ulasan",
+                  path: "/adminulasan",
                   name: "admin.ulasan.index",
                   component: () => import("@/views/Admin/Ulasan/indexPage.vue"),
             },
             {
-                path: "/user",
+                path: "/adminuser",
                 name: "admin.user.index",
                 component: () => import("@/views/Admin/User/indexPage.vue"),
           },

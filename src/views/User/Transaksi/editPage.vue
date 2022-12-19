@@ -40,6 +40,7 @@
     import { onMounted,reactive, ref } from 'vue'
     import { useRouter, useRoute } from 'vue-router'
     import axios from 'axios'
+    import { useToast } from "vue-toastification";
     export default {
         setup() {
             //state departemen
@@ -69,6 +70,8 @@
             
             //vue router
             const route = useRoute()
+            
+            let toast = useToast();
 
             onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}      
@@ -97,6 +100,9 @@
                 jumlah : jumlah,
                 status: 0
             }).then(() => {
+                        toast.success("Berhasil Edit Data !",{
+                            timeout: 2000
+                        })
             //redirect ke post index
                 router.push({
                     name: 'user.transaksi.index'
