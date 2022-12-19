@@ -1,6 +1,6 @@
 <template>
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">SUPERMARKET</a>
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3">SUPERMARKET</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
             data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -26,7 +26,7 @@
                 <div class="position-bottom pt-3">
                     <ul>
                         <li class="nav-item">
-                            <router-link :to="{ name: 'welcome' }" class="nav-link">Log Out</router-link>
+                            <router-link @click.prevent="logout()" :to="{ name: 'welcome' }" class="nav-link">Log Out</router-link>
                         </li>                        
                     </ul>
                 </div>
@@ -40,7 +40,41 @@
 </template>
 
 <script>
-    export default {};
+    import { useRouter } from "vue-router";
+    import axios from "axios";
+    export default {
+    setup() {
+        //inisialisasi vue router on Composition API
+        const router = useRouter();
+
+        //method logout
+        function logout() {
+        //logout
+
+        axios
+            .post("https://api.supermarketah.site/api/logout")
+            .then((response) => {
+            if (response.data.success) {
+                //remove localStorage
+                localStorage.removeItem("token");
+
+                //redirect ke halaman login
+                router
+                .push({
+                    name: "welcome",
+                })
+            }
+            })
+            .catch((error) => {
+            console.log(error.response.data);
+            });
+        }
+
+        return {
+        logout, // <-- method logout
+        };
+    },
+};
 </script>
 
 <style>
