@@ -73,8 +73,8 @@ export default {
                         status: status
                     })
                     .then(() => {
-                        ulasans.value.splice(ulasans.value.indexOf(id), 1);
-                        toast.success("Berhasil Edit Data !", {
+                        ulasans.value.slice(ulasans.value.indexOf(id), 1);
+                        toast.success("Berhasil Mengkonfirmasi Data !", {
                             timeout: 2000
                         })
                         //redirect ke post index

@@ -39,6 +39,7 @@
     import { reactive, ref } from 'vue'
     import { useRouter } from 'vue-router'
     import axios from 'axios'
+    import { useToast } from "vue-toastification";
 
     export default {
 
@@ -58,6 +59,8 @@
 
             //state loginFailed
             const loginFailed = ref(null)
+            
+            let toast = useToast();
 
             //method login
             function login() {
@@ -66,6 +69,9 @@
                     .post("http://localhost:8000/api/login", user)
                     .then((response) => {
                     if (response.data.success) {
+                        toast.success("Berhasil Login !",{
+                            timeout: 2000
+                        })
                         //set token
                         localStorage.setItem("id", response.data.user.id);
                         localStorage.setItem("token", response.data.access_token);

@@ -36,6 +36,7 @@
     import { reactive, ref } from 'vue'
     import { useRouter } from 'vue-router'
     import axios from 'axios'
+    import { useToast } from "vue-toastification";
 
     export default {
 
@@ -54,6 +55,8 @@
             //state validation
             const validation = ref([])
 
+            let toast = useToast();
+
             //method register
             function register() {
 
@@ -67,6 +70,10 @@
                         password,
                 })
                 .then(() => {
+                    
+                    toast.success("Berhasil Register !",{
+                            timeout: 2000
+                        })
 
                     //redirect ke halaman login
                     return router.push({

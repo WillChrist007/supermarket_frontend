@@ -42,10 +42,13 @@
 <script>
     import { useRouter } from "vue-router";
     import axios from "axios";
+    import { useToast } from "vue-toastification";
     export default {
     setup() {
         //inisialisasi vue router on Composition API
         const router = useRouter();
+        
+        let toast = useToast();
 
         //method logout
         function logout() {
@@ -55,6 +58,9 @@
             .post("http://localhost:8000/api/logout")
             .then((response) => {
             if (response.data.success) {
+                toast.error("Berhasil Logout !",{
+                            timeout: 2000
+                        })
                 //remove localStorage
                 localStorage.removeItem("token");
 

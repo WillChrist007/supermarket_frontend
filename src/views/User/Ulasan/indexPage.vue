@@ -46,12 +46,15 @@
 <script>
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
+    import { useToast } from "vue-toastification";
 export default {
     setup() {
         let ulasans = ref([])
 
         const token = localStorage.getItem('token')
         const id = localStorage.getItem('id')
+        
+        const toast = useToast();
 
         onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
@@ -68,6 +71,9 @@ export default {
         function ulasanDelete(id) {
             axios.delete(`http://localhost:8000/api/ulasan/${id}`)
             .then(() => {
+                toast.error("Berhasil Hapus Data !",{
+                            timeout: 2000
+                        })
                 ulasans.value.splice(ulasans.value.indexOf(id), 1);
             }).catch(error => {
                 console.log(error.response.data)

@@ -29,6 +29,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+    import { useToast } from "vue-toastification";
 export default {
     setup() {
         //state departemen
@@ -43,6 +44,8 @@ export default {
         const validation = ref([])
         //vue router
         const router = useRouter()
+        
+        const toast = useToast();
 
         onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
@@ -56,6 +59,10 @@ export default {
                 id_user: id,
                 status: 0
             }).then(() => {
+                
+                toast.success("Berhasil Tambah Data !",{
+                            timeout: 2000
+                        })
                 //redirect ke post index
                 router.push({
                     name: 'user.ulasan.index'
