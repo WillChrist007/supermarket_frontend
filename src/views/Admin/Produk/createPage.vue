@@ -61,13 +61,8 @@
 </template>
 
 <script>
-    import {
-        reactive,
-        ref
-    } from "vue";
-    import {
-        useRouter
-    } from "vue-router";
+    import { reactive, ref } from "vue";
+    import { useRouter } from "vue-router";
     import axios from "axios";
     import { useToast } from "vue-toastification";
     export default {
@@ -94,7 +89,7 @@
                 const token = localStorage.getItem('token')
                 axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
                 axios
-                    .post("http://localhost:8000/api/products", {
+                    .post("http://localhost:8000/api/product", {
                         nama_barang: nama_barang,
                         jenis: jenis,
                         ketersediaan: ketersediaan,
@@ -106,12 +101,12 @@
                         })
                         //redirect ke post index
                         router.push({
-                            name: "product.index",
+                            name: "admin.produk.index",
                         });
                     })
                     .catch((error) => {
                         //assign state validation with error
-                        validation.value = error.response.data;
+                        validation.value = error.response.data
                     });
             }
             //return

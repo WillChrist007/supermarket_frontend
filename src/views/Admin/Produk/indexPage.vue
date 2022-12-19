@@ -30,7 +30,7 @@
                                         <router-link :to="{ name: 'admin.produk.edit', params: { id: product.id } }" 
                                         class="btn btn-sm btn-primary mr-1">EDIT</router-link>
                                         &nbsp;
-                                        <button @click.prevent="productDelete(products.id)" class="btn btn-sm btn-danger ml-1">DELETE</button>
+                                        <button @click.prevent="productDelete(product.id)" class="btn btn-sm btn-danger ml-1">DELETE</button>
                                     </td>
                                 </tr>
                             </tbody>

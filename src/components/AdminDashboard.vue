@@ -52,7 +52,7 @@
         //logout
 
         axios
-            .post("https://api.supermarketah.site/api/logout")
+            .post("http://localhost:8000/api/logout")
             .then((response) => {
             if (response.data.success) {
                 //remove localStorage

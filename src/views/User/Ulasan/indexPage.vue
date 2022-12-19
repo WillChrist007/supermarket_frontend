@@ -26,13 +26,13 @@
                                         <router-link :to="{ name: 'user.ulasan.edit', params: { id: ulasan.id } }" 
                                         class="btn btn-sm btn-primary mr-1">EDIT</router-link>
                                         &nbsp;
-                                        <button @click.prevent="ulasanDelete(ulasans.id)" class="btn btn-sm btn-danger ml-1">DELETE</button>
+                                        <button @click.prevent="ulasanDelete(ulasan.id)" class="btn btn-sm btn-danger ml-1">DELETE</button>
                                     </td>
                                     <td v-if="ulasan.status=='1'" class="text-center">
                                         <router-link :to="{ name: 'user.ulasan.edit', params: { id: ulasan.id } }" 
                                         class="btn btn-sm btn-primary mr-1 disabled">EDIT</router-link>
                                         &nbsp;
-                                        <button @click.prevent="ulasanDelete(ulasans.id)" class="btn btn-sm btn-danger ml-1 disabled">DELETE</button>
+                                        <button @click.prevent="ulasanDelete(ulasan.id)" class="btn btn-sm btn-danger ml-1 disabled">DELETE</button>
                                     </td>
                                 </tr>
                             </tbody>

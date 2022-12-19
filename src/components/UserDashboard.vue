@@ -29,8 +29,8 @@
                 <div class="position-bottom pt-3">
                     <ul>
                         <li class="nav-item">
-                            <router-link :to="{ name: 'welcome' }" class="nav-link">Log Out</router-link>
-                        </li>                        
+                            <router-link @click.prevent="logout()" :to="{ name: 'welcome' }" class="nav-link">Log Out</router-link>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -43,7 +43,41 @@
 </template>
 
 <script>
-    export default {};
+    import { useRouter } from "vue-router";
+    import axios from "axios";
+    export default {
+    setup() {
+        //inisialisasi vue router on Composition API
+        const router = useRouter();
+
+        //method logout
+        function logout() {
+        //logout
+
+        axios
+            .post("http://localhost:8000/api/logout")
+            .then((response) => {
+            if (response.data.success) {
+                //remove localStorage
+                localStorage.removeItem("token");
+
+                //redirect ke halaman login
+                router
+                .push({
+                    name: "welcome",
+                })
+            }
+            })
+            .catch((error) => {
+            console.log(error.response.data);
+            });
+        }
+
+        return {
+        logout, // <-- method logout
+        };
+    },
+};
 </script>
 
 <style>

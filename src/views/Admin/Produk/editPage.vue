@@ -88,7 +88,7 @@
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
             //get API from Laravel Backend
             axios
-                .get("http://localhost:8000/api/products/" + id,)
+                .get("http://localhost:8000/api/product/" + id,)
                 .then(response => {
                     //assign state posts with response data
                     product.nama_barang = response.data.data.nama_barang
@@ -109,7 +109,7 @@
 
                 let toast = useToast();
                 axios
-                    .put("http://localhost:8000/api/products/" + id, {
+                    .put("http://localhost:8000/api/product/" + id, {
                         nama_barang: nama_barang,
                         jenis: jenis,
                         ketersediaan: ketersediaan,
@@ -121,7 +121,7 @@
                         })
                         //redirect ke post index
                         router.push({
-                            name: "product.index",
+                            name: "admin.produk.index",
                         });
                     })
                     .catch((error) => {
