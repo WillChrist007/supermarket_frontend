@@ -9,7 +9,7 @@
                    <div class="card-body">
                        <table class="table table-striped table-bordered mt4">
                            <thead class="thead-dark">
-                               <tr>
+                               <tr class="text-center">
                                    <th scope="col">NAMA BARANG</th>
                                    <th scope="col">JENIS</th>
                                    <th scope="col">KETERSEDIAAN</th>
@@ -21,7 +21,7 @@
                                </tr>
                            </thead>
                            <tbody>
-                               <tr v-for="(transaksi, id) in transaksis" :key="id">
+                               <tr v-for="(transaksi, id) in transaksis" :key="id" class="text-center">
                                    <td>{{ transaksi.product.nama_barang }}</td>
                                    <td>{{ transaksi.product.jenis }}</td>
                                    <td v-if="transaksi.product.ketersediaan == 0">Kosong</td>
