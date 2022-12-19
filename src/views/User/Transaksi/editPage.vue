@@ -94,7 +94,7 @@
             axios.put(`http://localhost:8000/api/transaksi/${route.params.id}`, {
                 id_user : id_user,
                 id_product : id_produk,
-                jumlah : jumlah ,
+                jumlah : jumlah,
                 status: 0
             }).then(() => {
             //redirect ke post index

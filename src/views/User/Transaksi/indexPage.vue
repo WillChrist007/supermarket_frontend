@@ -61,11 +61,10 @@
 </template>
 <script>
 import axios from 'axios'
-import { onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter} from 'vue-router'
 export default {
    setup() {
-
 
          //state departemen
        let transaksis = ref([])
@@ -84,6 +83,7 @@ export default {
            })
        })
 
+
        function deleteTransaksi(id) {
            //delete data post by ID
            axios.delete(`http://localhost:8000/api/transaksi/${id}`).then(() => {          
@@ -97,10 +97,10 @@ export default {
             }) 
            }
 
-       function bayarTransaksi(id) {   
+       function bayarTransaksi(id) {
            //delete data post by ID
-           axios.put(`http://localhost:8000/api/transaksi/${id}`, {
-               status: 1
+           axios.put(`http://localhost:8000/api/transaksiConfirm/${id}`, {
+                status: 1
            }).then(() => {
            //redirect ke post index
                router.push({
