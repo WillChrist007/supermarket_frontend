@@ -11,7 +11,7 @@
                             PRODUK</router-link>
                         <table class="table table-striped table-bordered mt4">
                             <thead class="thead-dark">
-                                <tr>
+                                <tr class="text-center">
                                     <th scope="col">NAMA BARANG</th>
                                     <th scope="col">JENIS</th>
                                     <th scope="col">HARGA</th>
@@ -20,7 +20,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(product, id) in products" :key="id">
+                                <tr v-for="(product, id) in products" :key="id" class="text-center">
                                     <td>{{ product.nama_barang }}</td>
                                     <td>{{ product.jenis }}</td>
                                     <td>{{ product.harga }}</td>

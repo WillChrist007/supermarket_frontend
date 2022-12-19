@@ -26,7 +26,7 @@
     </div>
 </template>
 <script>
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 export default {
@@ -34,20 +34,31 @@ export default {
         //state departemen
         const ulasan = reactive({
             isi : '',
+            id_user : '',
+            status : '',
         })
+        const token = localStorage.getItem('token')
+        const id = localStorage.getItem('id')
         //state validation
         const validation = ref([])
         //vue router
         const router = useRouter()
+
+        onMounted(() => {
+            axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+        })
+
         //method store
         function store() {
             let isi = ulasan.isi
             axios.post('http://localhost:8000/api/ulasan', {
                 isi: isi,
+                id_user: id,
+                status: 0
             }).then(() => {
                 //redirect ke post index
                 router.push({
-                    name: 'ulasan.index'
+                    name: 'user.ulasan.index'
                 })
             }).catch(error => {
                 //assign state validation with error

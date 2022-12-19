@@ -1,105 +1,147 @@
 <template>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card border-0 rounded shadow">
-                    <div class="card-body">
-                        <h4>PROFILE USER</h4>
-                        <hr>
-                        <form action="">
-                        <div class="form-group mb-3">
-                            <label for="inputNama" class="col-sm-3 col-form-label">Nama</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="nama">
-                            </div>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card border-0 rounded shadow">
+                        <div class="card-body">
+                            <h4>EDIT PROFILE PAGE</h4>
+                            <hr />
+                            <form @submit.prevent="update">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Nama User</label>
+                                    <input type="text" class="form-control" v-model="user.nama"
+                                        placeholder="Masukkan nama user"/>
+                                    <!-- validation -->
+                                    <div v-if="validation.nama" class="mt-2 alert alert-danger">
+                                        {{ validation.nama[0] }}
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="content" class="form-label">Email User</label>
+                                    <input class="form-control" v-model="user.email"
+                                        placeholder="Masukkan email user" />
+                                    <!-- validation -->
+                                    <div v-if="validation.email" class="mt-2 alert alert-danger">
+                                        {{ validation.email[0] }}
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="content" class="form-label">Password User</label>
+                                    <input class="form-control" v-model="user.password"
+                                        placeholder="Masukkan password user" />
+                                    <!-- validation -->
+                                    <div v-if="validation.password" class="mt-2 alert alert-danger">
+                                        {{ validation.password[0] }}
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="content" class="form-label">Telepon User</label>
+                                    <input class="form-control" v-model="user.telepon"
+                                        placeholder="Masukkan telepon user" />
+                                    <!-- validation -->
+                                    <div v-if="validation.telepon" class="mt-2 alert alert-danger">
+                                        {{ validation.telepon[0] }}
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="content" class="form-label">Alamat User</label>
+                                    <input class="form-control" v-model="user.alamat"
+                                        placeholder="Masukkan alamat user" />
+                                    <!-- validation -->
+                                    <div v-if="validation.alamat" class="mt-2 alert alert-danger">
+                                        {{ validation.alamat[0] }}
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">SIMPAN</button>
+                            </form>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="inputNama" class="col-sm-3 col-form-label">Email</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="email">
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="inputTelp" class="col-sm-3 col-form-label">No. Telp</label>
-                            <div class="col-sm-10">
-                                <input type="number" class="form-control" v-model="telepon">
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="inputAlamat" class="col-sm-3 col-form-label">Alamat</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" v-model="alamat">
-                            </div>
-                        </div>
-                        <br>
-                        <button type="submit" class="btn btn-primary">SIMPAN</button>
-                    </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</template>
-
-<script>
-import axios from 'axios'
-import { useRouter, useRoute } from 'vue-router'
-import { onMounted, ref } from 'vue'
-export default {
-
+    </template>
     
-    setup() {
-        //reactive state
-        let users = ref([])
-
-        const router = useRouter()
-
-        const route = useRoute();
-
-        const token = localStorage.getItem('token')
-
-        //mounted
-        onMounted(() =>{ 
-            axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
-
-            axios.get('http://localhost:8000/api/user')
-            .then(response => {
-                users.value = response.data.data
-                this.nama = response.data.nama
-                this.telepon = response.data.telepon
-                this.alamat = response.data.alamat
-            }).catch(error=> {
-                console.log(error.response.data)
-            })
-        })
-
-        function update() {
-         let toast = useToast()
-         let nama = user.nama
-         let email = user.email
-         axios.
-         put(`http://localhost:8000/api/user/update/${route.params.id}`,{
-             name: nama,
-             email: email,
-         }).then(()=> {
-             toast.success("Cek Inbox anda Untuk verifikasi Email",{
-                 timeout: 2000
-             })
-             router.push({
-                 name: 'login'
-             })
-         }).catch(error=>{
-                 validation.value = error.response.data
-             })
-        }
-
-        //return
-        return {
-            users,
-            update
-        }
-    }
-}
-</script>
-
-<!-- Profile edit -->
+    <script>
+        import { reactive, ref, onMounted } from "vue";
+        import { useRouter } from "vue-router";
+        import axios from "axios";
+        import { useToast } from "vue-toastification";
+        export default {
+            setup() {
+                //state user
+                const user = reactive({
+                    nama: "",
+                    email: "",
+                    password: "",
+                    telepon: "",
+                    alamat: "",
+                });
+                //state validation
+                const validation = ref([]);
+                //vue router
+                const router = useRouter();
+                //params id
+                const id = localStorage.getItem('id')
+    
+                onMounted(() => {
+                //get API from Laravel Backend
+                axios
+                    .get("http://localhost:8000/api/user/" + id,)
+                    .then(response => {
+                        //assign state posts with response data
+                        user.nama = response.data.data.nama
+                        user.email = response.data.data.email
+                        user.password = response.data.data.password
+                        user.telepon = response.data.data.telepon
+                        user.alamat = response.data.data.alamat
+                    }).catch(error => {
+                        console.log(error.response.data)
+                    })
+                })
+    
+                //method update
+                function update() {
+                    let nama = user.nama;
+                    let email = user.email;
+                    let password = user.password;
+                    let telepon = user.telepon;
+                    let alamat = user.alamat;
+    
+                    let toast = useToast();
+                    axios
+                        .put("http://localhost:8000/api/user/" + id, {
+                            nama: nama,
+                            email: email,
+                            password: password,
+                            telepon: telepon,
+                            alamat: alamat,
+                        })
+                        .then(() => {
+                            toast.success("Berhasil Edit Data !",{
+                                timeout: 2000
+                            })
+                            //redirect ke post index
+                            router.push({
+                                name: "user.profile.view",
+                            });
+                        })
+                        .catch((error) => {
+                            //assign state validation with error
+                            validation.value = error.response.data;
+                        });
+                }
+                //return
+                return {
+                    user,
+                    validation,
+                    router,
+                    update,
+                };
+            },
+        };
+    
+    </script>
+    <style>
+    
+    </style>
+    

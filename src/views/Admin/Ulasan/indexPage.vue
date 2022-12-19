@@ -1,24 +1,31 @@
 <template>
+    <div class="d-flex justify-content-between flex-wrap flex-mdnowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">LIST ULASAN USER</h1>
+    </div>
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card border-0 rounded shadow">
                     <div class="card-body">
-                        <h4>UPDATE ULASAN</h4>
-                        <hr>
-                        <form @submit.prevent="update">
-                            <div class="form-group mb-3">
-                                <label class="form-label">Ulasan Anda</label>
-                                <b-form-textarea size="lg" type="text" class="form-control" v-model="ulasan.isi" placeholder="Masukkan Ulasan anda disini"></b-form-textarea>
-                                <!-- validation -->
-                                <div v-if="validation.isi" class="mt-2 alert alert-danger">
-                                    {{
-                                            validation.isi[0]
-                                    }}
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">SIMPAN</button>
-                        </form>
+                        <table class="table table-striped table-bordered mt4">
+                            <thead class="thead-dark">
+                                <tr class="text-center">
+                                    <th scope="col">ULASAN</th>
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col">AKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(ulasan, id) in ulasans" :key="id" class="text-center">
+                                    <td>{{ ulasan.isi }}</td>
+                                    <td v-if="ulasan.status=='1'">Sudah Dikonfirmasi</td>
+                                    <td v-else>Belum Dikonfirmasi</td>
+                                    <td class="text-center">                                        
+                                        <button @click.prevent="ulasanDelete(ulasans.id)" class="btn btn-sm btn-primary ml-1">CONFIRM</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -26,54 +33,38 @@
     </div>
 </template>
 <script>
-import { reactive, ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
+import { onMounted, ref } from 'vue'
 export default {
     setup() {
-        //state departemen
-        const ulasan = reactive({
-            isi : '',
-        })
-        //state validation
-        const validation = ref([])
-        //vue router
-        const router = useRouter()
+        let ulasans = ref([])
 
-        const route = useRoute()
+        const token = localStorage.getItem('token')
 
         onMounted(() => {
-            //get API from Laravel Backend
-            axios.get(`http://localhost:8000/api/ulasan/${route.params.id}`)
-                .then(response => {
-                    //assign state posts with response data
-                    ulasan.isi = response.data.data.isi
-                }).catch(error => {
-                    console.log(error.response.data)
-                })
+            axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
 
-        })
-        //method update
-        function update() {
-            let isi = ulasan.isi
-            axios.put(`http://localhost:8000/api/ulasan/${route.params.id}`, {
-                isi: isi,
-            }).then(() => {
-                //redirect ke post index
-                router.push({
-                    name: 'ulasan.index'
-                })
+            axios.get('http://localhost:8000/api/ulasan')
+            .then(response => {
+                ulasans.value = response.data.data
             }).catch(error => {
-                //assign state validation with error
-                validation.value = error.response.data
+                console.log(error.response.data)
+            })
+
+            
+        })
+        //method delete
+        function ulasanDelete(id) {
+            axios.delete(`http://localhost:8000/api/ulasan/${id}`)
+            .then(() => {
+                ulasans.value.splice(ulasans.value.indexOf(id), 1);
+            }).catch(error => {
+                console.log(error.response.data)
             })
         }
-        //return
         return {
-            ulasan,
-            validation,
-            router,
-            update
+            ulasans,
+            ulasanDelete
         }
     }
 }

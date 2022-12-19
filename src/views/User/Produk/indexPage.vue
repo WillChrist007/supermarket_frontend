@@ -7,26 +7,30 @@
             <div class="col-md-12">
                 <div class="card border-0 rounded shadow">
                     <div class="card-body">
-                        <router-link :to="{ name: 'user.transaksi.create' }" class="btn btn-md btn-success">TAMBAH
-                            TRANSAKSI</router-link>
                         <table class="table table-striped table-bordered mt4">
                             <thead class="thead-dark">
-                                <tr>
+                                <tr class="text-center">
                                     <th scope="col">NAMA BARANG</th>
-                                    <th scope="col">ID</th>
                                     <th scope="col">JENIS</th>
                                     <th scope="col">HARGA</th>
                                     <th scope="col">KETERSEDIAAN</th>
+                                    <th scope="col">AKSI</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(product, id) in products" :key="id">
+                                <tr v-for="(product, id) in products" :key="id" class="text-center">
                                     <td>{{ product.nama_barang }}</td>
-                                    <td>{{ product.id }}</td>
                                     <td>{{ product.jenis }}</td>
                                     <td>{{ product.harga }}</td>
-                                    <td>{{ product.ketersediaan }}</td>
-                                    <td class="text-center">
+                                    <td v-if="product.ketersediaan=='1'">Tersedia</td>
+                                    <td v-else>Kosong</td>
+                                    <td v-if="product.ketersediaan=='1'" class="text-center">
+                                        <router-link :to="{ name: 'user.transaksi.create', params: { id: product.id } }" 
+                                        class="btn btn-sm btn-success mr-1">ADD TO CART</router-link>
+                                    </td>
+                                    <td v-if="product.ketersediaan=='0'" class="text-center">
+                                        <router-link :to="{ name: 'user.transaksi.create', params: { id: product.id } }" 
+                                        class="btn btn-sm btn-success mr-1 disabled">ADD TO CART</router-link>
                                     </td>
                                 </tr>
                             </tbody>
@@ -45,6 +49,7 @@ export default {
         let products = ref([])
 
         const token = localStorage.getItem('token')
+
         onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
 
@@ -54,10 +59,12 @@ export default {
             }).catch(error => {
                 console.log(error.response.data)
             })
+
+            
         })
 
         return {
-            products
+            products,
         }
     }
 }
