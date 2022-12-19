@@ -20,8 +20,11 @@
                                     <td>{{ ulasan.isi }}</td>
                                     <td v-if="ulasan.status=='1'">Sudah Dikonfirmasi</td>
                                     <td v-else>Belum Dikonfirmasi</td>
-                                    <td class="text-center">                                        
-                                        <button @click.prevent="ulasanDelete(ulasans.id)" class="btn btn-sm btn-primary ml-1">CONFIRM</button>
+                                    <td v-if="ulasan.status=='1'" class="text-center">                                        
+                                        <button @click.prevent="ulasanConfirm(ulasan.id)" class="btn btn-sm btn-primary ml-1 disabled">CONFIRM</button>
+                                    </td>
+                                    <td v-else class="text-center">                                        
+                                        <button @click.prevent="ulasanConfirm(ulasan.id)" class="btn btn-sm btn-primary ml-1">CONFIRM</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -33,13 +36,22 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { useToast } from "vue-toastification";
 export default {
     setup() {
         let ulasans = ref([])
 
         const token = localStorage.getItem('token')
+
+        //state validation
+        const validation = ref([]);
+        //vue router
+        const router = useRouter();
+
+        const toast = useToast();
 
         onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
@@ -54,17 +66,30 @@ export default {
             
         })
         //method delete
-        function ulasanDelete(id) {
-            axios.delete(`http://localhost:8000/api/ulasan/${id}`)
-            .then(() => {
-                ulasans.value.splice(ulasans.value.indexOf(id), 1);
-            }).catch(error => {
-                console.log(error.response.data)
-            })
+        function ulasanConfirm(id) {
+            let status = 1;
+
+            axios.put("http://localhost:8000/api/ulasanConfirm/" + id, {
+                        status: status
+                    })
+                    .then(() => {
+                        ulasans.value.splice(ulasans.value.indexOf(id), 1);
+                        toast.success("Berhasil Edit Data !", {
+                            timeout: 2000
+                        })
+                        //redirect ke post index
+                        router.push({
+                            name: "admin.ulasan.index",
+                        });
+                    })
+                    .catch((error) => {
+                        //assign state validation with error
+                        validation.value = error.response.data;
+                    });
         }
         return {
             ulasans,
-            ulasanDelete
+            ulasanConfirm
         }
     }
 }
