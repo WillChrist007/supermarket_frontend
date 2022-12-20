@@ -80,7 +80,7 @@ export default {
 
         onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}  
-            axios.get(`http://localhost:8000/api/transaksiByIdUser/${id_user}`)
+            axios.get(`https://supermarketku.site/api/transaksiByIdUser/${id_user}`)
                 .then(response => {
                     transaksis.value = response.data.data
                 }).catch(error => {
@@ -91,7 +91,7 @@ export default {
 
         function deleteTransaksi(id) {
             //delete data post by ID
-            axios.delete(`http://localhost:8000/api/transaksi/${id}`).then(() => {   
+            axios.delete(`https://supermarketku.site/api/transaksi/${id}`).then(() => {   
                         toast.error("Berhasil Hapus Data !",{
                             timeout: 2000
                         })       
@@ -107,7 +107,7 @@ export default {
 
         function bayarTransaksi(id) {
             //delete data post by ID
-            axios.put(`http://localhost:8000/api/transaksiConfirm/${id}`, {
+            axios.put(`https://supermarketku.site/api/transaksiConfirm/${id}`, {
                     status: 1
             }).then(() => {
                         toast.success("Berhasil Melakukan Transaksi !",{

@@ -86,7 +86,7 @@
                 onMounted(() => {
                 //get API from Laravel Backend
                 axios
-                    .get("http://localhost:8000/api/user/" + id,)
+                    .get("https://supermarketku.site/api/user/" + id,)
                     .then(response => {
                         //assign state posts with response data
                         user.nama = response.data.data.nama
@@ -109,7 +109,7 @@
     
                     let toast = useToast();
                     axios
-                        .put("http://localhost:8000/api/user/" + id, {
+                        .put("https://supermarketku.site/api/user/" + id, {
                             nama: nama,
                             email: email,
                             password: password,

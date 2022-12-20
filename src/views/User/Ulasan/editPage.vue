@@ -50,7 +50,7 @@
             onMounted(() => {
                 //get API from Laravel Backend
                 axios
-                    .get("http://localhost:8000/api/ulasan/" + route.params.id , )
+                    .get("https://supermarketku.site/api/ulasan/" + route.params.id , )
                     .then(response => {
                         //assign state posts with response data
                         ulasan.isi = response.data.data.isi
@@ -69,7 +69,7 @@
 
                 let toast = useToast();
                 axios
-                    .put("http://localhost:8000/api/ulasan/" + route.params.id, {
+                    .put("https://supermarketku.site/api/ulasan/" + route.params.id, {
                         isi: isi,
                         id_user: id_user,
                         status: status

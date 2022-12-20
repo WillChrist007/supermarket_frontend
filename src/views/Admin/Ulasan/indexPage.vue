@@ -56,7 +56,7 @@ export default {
         onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
 
-            axios.get('http://localhost:8000/api/ulasan')
+            axios.get('https://supermarketku.site/api/ulasan')
             .then(response => {
                 ulasans.value = response.data.data
             }).catch(error => {
@@ -69,7 +69,7 @@ export default {
         function ulasanConfirm(id) {
             let status = 1;
 
-            axios.put("http://localhost:8000/api/ulasanConfirm/" + id, {
+            axios.put("https://supermarketku.site/api/ulasanConfirm/" + id, {
                         status: status
                     })
                     .then(() => {

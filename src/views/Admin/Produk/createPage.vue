@@ -89,7 +89,7 @@
                 const token = localStorage.getItem('token')
                 axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
                 axios
-                    .post("http://localhost:8000/api/product", {
+                    .post("https://supermarketku.site/api/product", {
                         nama_barang: nama_barang,
                         jenis: jenis,
                         ketersediaan: ketersediaan,

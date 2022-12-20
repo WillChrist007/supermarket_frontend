@@ -55,7 +55,7 @@
         //logout
 
         axios
-            .post("http://localhost:8000/api/logout")
+            .post("https://supermarketku.site/api/logout")
             .then((response) => {
             if (response.data.success) {
                 toast.error("Berhasil Logout !",{

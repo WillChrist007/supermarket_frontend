@@ -66,7 +66,7 @@
             function login() {
                 //send server with axios
                 axios
-                    .post("http://localhost:8000/api/login", user)
+                    .post("https://supermarketku.site/api/login", user)
                     .then((response) => {
                     if (response.data.success) {
                         toast.success("Berhasil Login !",{

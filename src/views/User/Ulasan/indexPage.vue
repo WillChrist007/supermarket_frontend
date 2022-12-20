@@ -59,7 +59,7 @@ export default {
         onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
 
-            axios.get('http://localhost:8000/api/ulasanByIdUser/' + id)
+            axios.get('https://supermarketku.site/api/ulasanByIdUser/' + id)
             .then(response => {
                 ulasans.value = response.data.data
             }).catch(error => {
@@ -69,7 +69,7 @@ export default {
 
         //method delete
         function ulasanDelete(id) {
-            axios.delete(`http://localhost:8000/api/ulasan/${id}`)
+            axios.delete(`https://supermarketku.site/api/ulasan/${id}`)
             .then(() => {
                 toast.error("Berhasil Hapus Data !",{
                             timeout: 2000

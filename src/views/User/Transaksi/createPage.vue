@@ -69,7 +69,7 @@
             onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}    
             //get API from Laravel Backend
-            axios.get(`http://localhost:8000/api/product/${route.params.id}`)
+            axios.get(`https://supermarketku.site/api/product/${route.params.id}`)
             .then(response => {
             //assign state departemen with response data
                 transaksi.nama_produk = response.data.data.nama_barang
@@ -84,7 +84,7 @@
             function store() {
             let jumlah = transaksi.jumlah
             let id_produk = route.params.id 
-            axios.post(`http://localhost:8000/api/transaksi`, {
+            axios.post(`https://supermarketku.site/api/transaksi`, {
                 id_user : id_user,
                 id_product : id_produk,
                 jumlah : jumlah,

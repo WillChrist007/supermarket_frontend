@@ -53,7 +53,7 @@ export default {
         onMounted(() => {
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
 
-            axios.get('http://localhost:8000/api/user')
+            axios.get('https://supermarketku.site/api/user')
             .then(response => {
                 users.value = response.data.data
             }).catch(error => {
@@ -64,7 +64,7 @@ export default {
         })
         //method delete
         function userDelete(id) {
-            axios.delete(`http://localhost:8000/api/user/${id}`)
+            axios.delete(`https://supermarketku.site/api/user/${id}`)
             .then(() => {
                         toast.error("Berhasil Hapus Data !",{
                             timeout: 2000

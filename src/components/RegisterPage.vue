@@ -65,7 +65,7 @@
                 let password = user.password
 
                 //send server with axios
-                axios.post('http://localhost:8000/api/register', {
+                axios.post('https://supermarketku.site/api/register', {
                         email,
                         password,
                 })

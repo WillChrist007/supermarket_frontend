@@ -54,7 +54,7 @@ export default {
         //method store
         function store() {
             let isi = ulasan.isi
-            axios.post('http://localhost:8000/api/ulasan', {
+            axios.post('https://supermarketku.site/api/ulasan', {
                 isi: isi,
                 id_user: id,
                 status: 0
